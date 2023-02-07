@@ -28,11 +28,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// userSchema.pre("save", async function () {
-//   const salt = await bcrypt.genSalt(10);
-//   this.password = await bcrypt.hash(this.password, salt);
-// });
-
 userSchema.pre("save", function () {
   const salt = crypto.randomBytes(16).toString("hex");
   const hashedPassword = crypto
@@ -44,7 +39,7 @@ userSchema.pre("save", function () {
   this.password = encryptedPassword;
 });
 
-userSchema.methods.createJwt = function () {
+userSchema.methods.createJWT = function() {
   return jwt.sign(
     { userId: this._id, name: this.name },
     process.env.JWT_SECRET,
@@ -52,9 +47,21 @@ userSchema.methods.createJwt = function () {
   );
 };
 
-userSchema.methods.comparePassword = async function (canditatePassword) {
-  const isMatch = await bcrypt.compare(canditatePassword, this.password);
-  return isMatch;
+userSchema.methods.comparePassword = function (password) {
+  const pattern = new RegExp(
+    process.env.HASHED_PASSWORD_SALT_MERGER_KEY_1,
+    "g"
+  );
+  const passwordSeparator = this.password.replace(pattern, ".$&.");
+  const salt = passwordSeparator.split(".")[0];
+  const hashedPassword = crypto
+    .pbkdf2Sync(password, salt, 1000, 64, "sha512")
+    .toString("hex");
+
+  const encryptedPassword =
+    salt + process.env.HASHED_PASSWORD_SALT_MERGER_KEY_1 + hashedPassword;
+
+  return this.password === encryptedPassword;
 };
 
 module.exports = mongoose.model("User", userSchema);

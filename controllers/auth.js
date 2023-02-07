@@ -7,7 +7,7 @@ const register = async (req, res) => {
     const user = await userModel.create({ ...req.body });
     res
       .status(StatusCodes.CREATED)
-      .json({ user: user.name, token: user.createJwt() });
+      .json({ user: user.name, token: user.createJWT() });
   } catch (error) {
     console.log(error);
   }
@@ -19,17 +19,17 @@ const login = async (req, res) => {
   if (!email || !password) {
     throw new BadRequestError("Please provide email and password");
   }
-  const user = await User.findOne({ email });
+  const user = await userModel.findOne({ email });
   if (!user) {
-    throw new UnauthenticatedError("Invalid Credentials");
+    throw new UnauthenticatedError("Email not found");
   }
-  const isPasswordCorrect = await user.comparePassword(password);
+  const isPasswordCorrect = user.comparePassword(password);
+
   if (!isPasswordCorrect) {
-    throw new UnauthenticatedError("Invalid Credentials");
+    throw new UnauthenticatedError("Wrong Credentials!!");
   }
-  // compare password
-  const token = user.createJWT();
-  res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
+
+  res.status(StatusCodes.OK).json({ user: user.name, token: user.createJWT() });
 };
 
 module.exports = {
