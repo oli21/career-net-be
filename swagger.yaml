@@ -1,0 +1,265 @@
+openapi: 3.0.0
+info:
+  title: career-net-be
+  description: ''
+  contact: {}
+  version: '1.0'
+servers:
+- url: https://career-net-be.onrender.com/api/v1
+  variables: {}
+paths:
+  /jobs:
+    post:
+      tags:
+      - jobs
+      summary: Create job
+      description: ''
+      operationId: Createjob
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/CreatejobRequest'
+              - example:
+                  company: Google
+                  position: Backend engineer
+            example:
+              company: Google
+              position: Backend engineer
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+          content:
+            text/plain:
+              schema: {}
+      deprecated: false
+    get:
+      tags:
+      - jobs
+      summary: Get all jobs
+      description: ''
+      operationId: Getalljobs
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+          content:
+            text/plain:
+              schema: {}
+      deprecated: false
+  /jobs/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The job Id
+    get:
+      tags:
+      - jobs
+      summary: Get a job
+      description: ''
+      operationId: Getajob
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+          content:
+            text/plain:
+              schema: {}
+      deprecated: false
+    patch:
+      tags:
+      - jobs
+      summary: Update a job
+      description: ''
+      operationId: Updateajob
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/UpdateajobRequest'
+              - example:
+                  status: interview
+                  company: Google
+                  position: Frontend engineer
+            example:
+              status: interview
+              company: Google
+              position: Frontend engineer
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+          content:
+            text/plain:
+              schema: {}
+      deprecated: false
+    delete:
+      tags:
+      - jobs
+      summary: Delete a job
+      description: ''
+      operationId: Deleteajob
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+          content:
+            text/plain:
+              schema: {}
+      deprecated: false
+  /auth/register:
+    post:
+      tags:
+      - auth
+      summary: Register User
+      description: ''
+      operationId: RegisterUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/RegisterUserRequest'
+              - example:
+                  name: Esha
+                  email: Esha@gmail.com
+                  password: oli210995
+            example:
+              name: Esha
+              email: Esha@gmail.com
+              password: oli210995
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+          content:
+            text/plain:
+              schema: {}
+      deprecated: false
+      security: []
+  /auth/login:
+    post:
+      tags:
+      - auth
+      summary: Login user
+      description: ''
+      operationId: Loginuser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/LoginuserRequest'
+              - example:
+                  email: Esha@gmail.com
+                  password: oli210995
+            example:
+              email: Esha@gmail.com
+              password: oli210995
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+          content:
+            text/plain:
+              schema: {}
+      deprecated: false
+      security: []
+components:
+  schemas:
+    CreatejobRequest:
+      title: CreatejobRequest
+      required:
+      - company
+      - position
+      type: object
+      properties:
+        company:
+          type: string
+        position:
+          type: string
+      example:
+        company: Google
+        position: Backend engineer
+    UpdateajobRequest:
+      title: UpdateajobRequest
+      required:
+      - status
+      - company
+      - position
+      type: object
+      properties:
+        status:
+          type: string
+        company:
+          type: string
+        position:
+          type: string
+      example:
+        status: interview
+        company: Google
+        position: Frontend engineer
+    RegisterUserRequest:
+      title: RegisterUserRequest
+      required:
+      - name
+      - email
+      - password
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        name: Esha
+        email: Esha@gmail.com
+        password: oli210995
+    LoginuserRequest:
+      title: LoginuserRequest
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: Esha@gmail.com
+        password: oli210995
+  securitySchemes:
+    httpBearer:
+      type: http
+      scheme: bearer
+security:
+- httpBearer: []
+tags:
+- name: jobs
+  description: ''
+- name: auth
+  description: ''
