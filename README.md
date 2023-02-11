@@ -1,5 +1,5 @@
 # career-net-be
-This is the backend for digital jobs platform careerNet
+This is the backend for digital jobs platform careerNet. This is only backend project. No frontend is added.
 
 #### Live Address -
 https://career-net-be.onrender.com/api-docs/#/
